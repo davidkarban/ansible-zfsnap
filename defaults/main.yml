@@ -1,4 +1,4 @@
 ---
 zfsnap: true
-zfsnap_cron_file: "zfsbackup"
-zfsnap_user: "root"
+cron_file: "zfsbackup"
+user: "root"

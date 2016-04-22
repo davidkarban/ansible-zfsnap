@@ -10,15 +10,15 @@
 - name: Create cron task for incremental backups
   tags: zfsnap
   cron:
-    minute: "{{ item.zfsnap_minute|default('23') }}"
-    hour: "{{ item.zfsnap_hour|default('01') }}"
-    day: "{{ item.zfsnap_day|default('*') }}"
-    month: "{{ item.zfsnap_month|default('*') }}"
-    dow: "{{ item.zfsnap_dow|default('*') }}"
-    user: "{{ item.zfsnap_user|default(zfsnap_user) }}"
-    name: "{{ item.zfsnap_cron_file|default(zfsnap_cron_file) }}"
-    cron_file: "{{ item.zfsnap_cron_file|default(zfsnap_cron_file) }}"
-    job: "/usr/local/sbin/zfsnap.sh -a {{ item.zfsnap_ttl|default('1m') }} -r {{ item.zfsnap_backup_path|default('tank/vz') }}"
+    minute: "{{ item.minute|default('23') }}"
+    hour: "{{ item.hour|default('01') }}"
+    day: "{{ item.day|default('*') }}"
+    month: "{{ item.month|default('*') }}"
+    dow: "{{ item.dow|default('*') }}"
+    user: "{{ item.user|default(user) }}"
+    name: "{{ item.cron_file|default(cron_file) }}"
+    cron_file: "{{ item.cron_file|default(cron_file) }}"
+    job: "/usr/local/sbin/zfsnap.sh -a {{ item.ttl|default('1m') }} -r {{ item.backup_path|default('tank/vz') }}"
     backup: yes
     state: present
   with_items: "{{ zfsnap_jobs }}"
@@ -28,7 +28,7 @@
   cron:
     minute: 0
     hour: 1
-    user: "{{ zfsnap_user|default(zfsnap_user) }}"
+    user: "{{ user }}"
     name: "Delete backups"
     cron_file: "zfsnap_delete"
     job: "/usr/local/sbin/zfsnap.sh -d"
