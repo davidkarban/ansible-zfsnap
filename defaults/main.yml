@@ -1,5 +1,4 @@
 ---
 zfsnap: true
-
-zfsnap_backup_expiry: "1m"
-
+cron_file: "zfsbackup"
+user: "root"

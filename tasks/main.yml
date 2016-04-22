@@ -5,14 +5,32 @@
 
 - name: Copy zfsnap script on server
   tags: zfsnap
-  copy: src=zfSnap.sh dest=/usr/local/sbin/zfsnap.sh owner=root group=root mode=0700 
+  copy: src=zfSnap.sh dest=/usr/local/sbin/zfsnap.sh owner=root group=root mode=0700
 
 - name: Create cron task for incremental backups
   tags: zfsnap
-  cron: minute=0 hour=0 user=root name="Create backups" cron_file="zfsnap" job="/usr/local/sbin/zfsnap.sh -a {{ zfsnap_backup_expiry }} -r tank/vz" backup=yes state=present
+  cron:
+    minute: "{{ item.minute|default('23') }}"
+    hour: "{{ item.hour|default('01') }}"
+    day: "{{ item.day|default('*') }}"
+    month: "{{ item.month|default('*') }}"
+    dow: "{{ item.dow|default('*') }}"
+    user: "{{ item.user|default(user) }}"
+    name: "{{ item.cron_file|default(cron_file) }}"
+    cron_file: "{{ item.cron_file|default(cron_file) }}"
+    job: "/usr/local/sbin/zfsnap.sh -a {{ item.ttl|default('1m') }} -r {{ item.backup_path|default('tank/vz') }}"
+    backup: yes
+    state: present
+  with_items: "{{ zfsnap_jobs }}"
 
 - name: Create cron task for deleting old backups
   tags: zfsnap
-  cron: minute=0 hour=1 user=root name="Delete backups" cron_file="zfsnap_delete" job="/usr/local/sbin/zfsnap.sh -d" backup=yes state=present
-
-
+  cron:
+    minute: 0
+    hour: 1
+    user: "{{ user }}"
+    name: "Delete backups"
+    cron_file: "zfsnap_delete"
+    job: "/usr/local/sbin/zfsnap.sh -d"
+    backup: yes
+    state: present
