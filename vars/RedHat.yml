@@ -1,6 +1,8 @@
 ---
 pkgs: []
 
+zfsnap_name: "/usr/local/sbin/zfsnap.sh"
+
 #_service: 
 #_conf_dir: "/etc/"
 

@@ -2,4 +2,6 @@
 zfsnap: true
 
 zfsnap_backup_expiry: "1m"
+zfsnap_pools: 
+  - "tank/vz"
 

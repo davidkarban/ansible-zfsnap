@@ -1,6 +1,8 @@
 ---
 pkgs: []
 
+zfsnap_name: "/usr/sbin/zfSnap"
+
 #_service: 
 #_conf_dir: 
 
