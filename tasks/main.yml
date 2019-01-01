@@ -25,7 +25,7 @@
     user: "root"
     name: "Create backups"
     cron_file: "zfsnap"
-    job: "{{ zfsnap_name }} -a {{ zfsnap_backup_expiry }} -r {{ zfsnap_pools }}"
+    job: "{{ zfsnap_name }} -a {{ zfsnap_backup_expiry }} -r {{ item }}"
     backup: yes
     state: present
   loop: "{{ zfsnap_pools }}"
